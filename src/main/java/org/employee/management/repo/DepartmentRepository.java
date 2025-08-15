@@ -12,13 +12,15 @@ import java.util.Optional;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
-    Optional<Department> findByDepartmentName(String name);
+    Optional<Department> findByDepartmentNameIgnoreCase(String name);
 
     @Query("""
-             SELECT new org.employee.management.model.dto.DepartmentDto(
-            d.departmentName FROM Department d
-            """)
+       SELECT new org.employee.management.model.dto.DepartmentDto(
+           d.departmentName
+       )
+       FROM Department d
+       """)
     List<DepartmentDto> getAllDepartments();
 
-    boolean existsByDepartmentName(String departmentName);
+    boolean existsByDepartmentNameIgnoreCase(String departmentName);
 }

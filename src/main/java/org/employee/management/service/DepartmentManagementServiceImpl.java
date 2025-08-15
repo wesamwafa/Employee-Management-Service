@@ -1,5 +1,6 @@
 package org.employee.management.service;
 
+import jakarta.transaction.Transactional;
 import org.employee.management.exception.BusinessException;
 import org.employee.management.model.dto.DepartmentDto;
 import org.employee.management.model.entity.Department;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentManagementServiceImpl implements DepartmentManagementService {
@@ -38,27 +40,43 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
     }
 
     @Override
-    public DepartmentDto getDepartment(DepartmentDto departmentDto) {
-        return null;
+    public DepartmentDto getDepartment(String departmentId) throws BusinessException {
+        Department department = departmentRepository.findById(Long.valueOf(departmentId))
+                .orElseThrow(() -> new BusinessException("Department doesnt exist"));
+        return DepartmentDto.builder().departmentName(department.getDepartmentName()).build();
     }
 
     @Override
-    public void updateDepartment(DepartmentDto departmentDto) {
+    public void updateDepartment(String departmentId, DepartmentDto departmentDto) {
+        Optional<Department> existingDepartment = departmentRepository.findById(Long.valueOf(departmentId));
+        if (existingDepartment.isPresent()) {
+            {
+                Department department = existingDepartment.get();
+                department.setDepartmentName(departmentDto.getDepartmentName());
+                departmentRepository.save(department);
+                logger.info("department updated successfully");
 
+            }
+        }
     }
 
     @Override
-    public void deleteDepartment(DepartmentDto departmentDto) {
-
+    @Transactional
+    public void deleteDepartment(String departmentId) throws BusinessException {
+        try {
+            departmentRepository.deleteById(Long.valueOf(departmentId));
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @Override
     public Department getDepartmentByName(String departmentName) throws BusinessException {
-        return departmentRepository.findByDepartmentName(departmentName)
+        return departmentRepository.findByDepartmentNameIgnoreCase(departmentName.trim())
                 .orElseThrow(() -> new BusinessException("Department '" + departmentName + "' does not exist"));
     }
 
     private boolean isDepartmentExist(DepartmentDto departmentDto) {
-        return departmentRepository.existsByDepartmentName(departmentDto.getDepartmentName());
+        return departmentRepository.existsByDepartmentNameIgnoreCase(departmentDto.getDepartmentName().trim());
     }
 }

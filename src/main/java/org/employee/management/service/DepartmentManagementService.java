@@ -12,11 +12,11 @@ public interface DepartmentManagementService {
 
     List<DepartmentDto> getAllDepartments();
 
-    DepartmentDto getDepartment(DepartmentDto departmentDto);
+    DepartmentDto getDepartment(String departmentId) throws BusinessException;
 
-    void updateDepartment(DepartmentDto departmentDto);
+    void updateDepartment(String departmentId , DepartmentDto departmentDto) throws BusinessException ;
 
-    void deleteDepartment(DepartmentDto departmentDto);
+    void deleteDepartment(String departmentId) throws BusinessException;
 
     Department getDepartmentByName(String departmentName) throws BusinessException;
 }
