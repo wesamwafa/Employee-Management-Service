@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class DepartmentManagementServiceImpl implements DepartmentManagementService {
 
-    private final DepartmentRepository departmentRepository ;
+    private final DepartmentRepository departmentRepository;
     private static final Logger logger = LoggerFactory.getLogger(DepartmentManagementServiceImpl.class);
 
 
@@ -22,11 +22,19 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
     }
 
     @Override
-    public void addDepartment(DepartmentDto departmentDto) {
+    public void addDepartment(DepartmentDto departmentDto) throws BusinessException {
+        if (isDepartmentExist(departmentDto)) {
+            throw new BusinessException("department already exists");
+        }
+        Department department = new Department();
+        department.setDepartmentName(departmentDto.getDepartmentName());
+        departmentRepository.save(department);
+        logger.info("department {} saved successfully ", department.getDepartmentName());
     }
+
     @Override
     public List<DepartmentDto> getAllDepartments() {
-        return List.of();
+        return departmentRepository.getAllDepartments();
     }
 
     @Override
@@ -38,13 +46,19 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
     public void updateDepartment(DepartmentDto departmentDto) {
 
     }
+
     @Override
     public void deleteDepartment(DepartmentDto departmentDto) {
 
     }
+
     @Override
     public Department getDepartmentByName(String departmentName) throws BusinessException {
         return departmentRepository.findByDepartmentName(departmentName)
                 .orElseThrow(() -> new BusinessException("Department '" + departmentName + "' does not exist"));
+    }
+
+    private boolean isDepartmentExist(DepartmentDto departmentDto) {
+        return departmentRepository.existsByDepartmentName(departmentDto.getDepartmentName());
     }
 }

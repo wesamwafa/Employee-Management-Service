@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DepartmentManagementService {
 
-    void addDepartment(DepartmentDto departmentDto);
+    void addDepartment(DepartmentDto departmentDto) throws BusinessException;
 
     List<DepartmentDto> getAllDepartments();
 

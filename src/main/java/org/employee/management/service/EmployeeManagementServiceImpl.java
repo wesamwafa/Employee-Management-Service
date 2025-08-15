@@ -123,7 +123,6 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
         }
     }
 
-
     private Department getDepartmentByName(String departmentName) throws BusinessException {
         return departmentManagementService.getDepartmentByName(departmentName);
     }
