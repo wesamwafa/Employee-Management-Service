@@ -21,8 +21,8 @@ public interface EmployeeController {
     ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("staffId") String staffId) throws BusinessException;
 
     @PutMapping("/{staffId}")
-    ResponseEntity<EmployeeDto> updateEmployee(@PathVariable String staffId, @RequestBody EmployeeDto employeeDto);
+    ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("staffId") String staffId, @RequestBody EmployeeDto employeeDto) throws BusinessException;
 
     @DeleteMapping("/{staffId}")
-    ResponseEntity<Void> deleteEmployee(@PathVariable String staffId);
+    ResponseEntity<Void> deleteEmployee(@PathVariable("staffId") String staffId) throws BusinessException;
 }

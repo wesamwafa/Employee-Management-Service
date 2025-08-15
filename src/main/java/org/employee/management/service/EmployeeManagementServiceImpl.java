@@ -1,5 +1,6 @@
 package org.employee.management.service;
 
+import jakarta.transaction.Transactional;
 import org.employee.management.exception.BusinessException;
 import org.employee.management.model.dto.EmployeeDto;
 import org.employee.management.model.entity.Department;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 
@@ -50,18 +50,34 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 
     @Override
     public EmployeeDto getEmployee(String staffId) throws BusinessException {
-        return employeeRepository.findByStaffId(staffId)
-                .orElseThrow(() -> new BusinessException("employee does not exist"));
+        Employee employee = employeeRepository.findByStaffId(staffId).orElseThrow(() -> new BusinessException("employee does not exist"));
+        return EmployeeDto.builder()
+                .staffId(staffId)
+                .salary(String.valueOf(employee.getSalary()))
+                .department(employee.getDepartment().getDepartmentName())
+                .email(employee.getEmail())
+                .hireDate(employee.getHireDate().toString())
+                .name(employee.getName())
+                .build();
     }
 
     @Override
-    public void updateEmployee(String staffId, EmployeeDto employeeDto) {
-
+    public void updateEmployee(String staffId, EmployeeDto updatedEmployeeDto) throws BusinessException {
+        //find employee or throw exception if not exist
+        Employee existingEmployee = getByStaffId(staffId);
+        updateEmployeeFromDto(existingEmployee,updatedEmployeeDto);
+        employeeRepository.save(existingEmployee);
+        logger.info("Employee updated successfully");
     }
 
     @Override
-    public void deleteEmployee(String staffId) {
-
+    @Transactional
+    public void deleteEmployee(String staffId) throws BusinessException {
+        try {
+            employeeRepository.deleteByStaffId(staffId);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     private Employee mapDtoToEmployee(EmployeeDto employeeDto) throws BusinessException {
@@ -75,11 +91,38 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
                 .build();
     }
 
+    private Employee getByStaffId(String staffId) throws BusinessException {
+        return employeeRepository.findByStaffId(staffId).orElseThrow(() -> new BusinessException("employee does not exist"));
+    }
+
     private void checkEmployeeExist(String staffId, String email) throws BusinessException {
         if (employeeRepository.existsByEmailOrStaffId(staffId, email)) {
             throw new BusinessException("employee already exists");
         }
     }
+
+    private void updateEmployeeFromDto(Employee employee, EmployeeDto employeeDto) throws BusinessException {
+        if (employeeDto.getName() != null) {
+            employee.setName(employeeDto.getName());
+        }
+        if (employeeDto.getEmail() != null) {
+            employee.setEmail(employeeDto.getEmail());
+        }
+        if (employeeDto.getDepartment() != null) {
+            Department department = departmentManagementService.getDepartmentByName(employeeDto.getDepartment()) ;
+            employee.setDepartment(department);
+        }
+        if (employeeDto.getHireDate() != null) {
+            employee.setHireDate(LocalDate.parse(employeeDto.getHireDate()));
+        }
+        if (employeeDto.getSalary() != null) {
+            employee.setSalary(Double.valueOf(employeeDto.getSalary()));
+        }
+        if (employeeDto.getStaffId() != null) {
+            employee.setStaffId(employeeDto.getStaffId());
+        }
+    }
+
 
     private Department getDepartmentByName(String departmentName) throws BusinessException {
         return departmentManagementService.getDepartmentByName(departmentName);

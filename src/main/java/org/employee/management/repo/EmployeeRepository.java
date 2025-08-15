@@ -31,14 +31,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
                 CAST(e.salary AS string)) FROM Employee e""")
     List<EmployeeDto> getAllEmployees();
 
-    @Query("""
-            SELECT new org.employee.management.model.dto.EmployeeDto(
-                e.staffId,
-                e.name,
-                e.email,
-                e.department.departmentName,
-                CAST(e.hireDate AS string),
-                CAST(e.salary AS string)) FROM Employee e WHERE e.staffId = :staffId""")
-    Optional<EmployeeDto> findByStaffId(@Param("staffId") String staffId);
+    Optional<Employee> findByStaffId(@Param("staffId") String staffId);
 
+    void deleteByStaffId(String staffId);
 }

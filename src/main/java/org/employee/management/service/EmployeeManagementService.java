@@ -13,8 +13,8 @@ public interface EmployeeManagementService {
 
     EmployeeDto getEmployee(String staffId) throws BusinessException;
 
-    void updateEmployee(String staffId, EmployeeDto employeeDto);
+    void updateEmployee(String staffId, EmployeeDto employeeDto) throws BusinessException;
 
-    void deleteEmployee(String staffId);
+    void deleteEmployee(String staffId) throws BusinessException;
 
 }

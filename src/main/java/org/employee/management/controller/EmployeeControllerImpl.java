@@ -41,12 +41,14 @@ public class EmployeeControllerImpl implements EmployeeController {
     }
 
     @Override
-    public ResponseEntity<EmployeeDto> updateEmployee(String staffId, EmployeeDto employeeDto) {
-        return null;
+    public ResponseEntity<EmployeeDto> updateEmployee(String staffId, EmployeeDto employeeDto) throws BusinessException {
+        employeeService.updateEmployee(staffId,employeeDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override
-    public ResponseEntity<Void> deleteEmployee(String staffId) {
-        return null;
+    public ResponseEntity<Void> deleteEmployee(String staffId) throws BusinessException{
+        employeeService.deleteEmployee(staffId);
+        return ResponseEntity.ok().build();
     }
 }
