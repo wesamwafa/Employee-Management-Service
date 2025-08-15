@@ -1,12 +1,13 @@
 package org.employee.management.service;
 
+import org.employee.management.exception.BusinessException;
 import org.employee.management.model.dto.EmployeeDto;
 
 import java.util.List;
 
 public interface EmployeeManagementService {
 
-    void addEmployee(EmployeeDto employeeDto);
+    void addEmployee(EmployeeDto employeeDto) throws BusinessException;
 
     List<EmployeeDto> getAllEmployees();
 

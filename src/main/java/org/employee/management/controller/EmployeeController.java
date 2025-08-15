@@ -1,20 +1,21 @@
 package org.employee.management.controller;
 
+import org.employee.management.exception.BusinessException;
 import org.employee.management.model.dto.EmployeeDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/employees")
+@RequestMapping("/employees")
 public interface EmployeeController {
 
 
     @PostMapping
-    ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto);
+    ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) throws BusinessException;
 
     @GetMapping
-    ResponseEntity<List<EmployeeDto>> getAllEmployees();
+    ResponseEntity<List<EmployeeDto>> getAllEmployees() throws BusinessException;
 
     @GetMapping("/{staffId}")
     ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long staffId);

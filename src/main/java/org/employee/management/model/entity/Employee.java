@@ -35,12 +35,12 @@ public class Employee {
     private Double salary;
 
     @Column(nullable = false)
-    private Department department;
+    private LocalDate hireDate;
 
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)
-    private LocalDate hireDate;
+    private Department department;
+
 
     @CreatedDate
     @Column(updatable = false)
