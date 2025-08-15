@@ -11,7 +11,7 @@ public interface EmployeeManagementService {
 
     List<EmployeeDto> getAllEmployees();
 
-    EmployeeDto getEmployee(String staffId);
+    EmployeeDto getEmployee(String staffId) throws BusinessException;
 
     void updateEmployee(String staffId, EmployeeDto employeeDto);
 

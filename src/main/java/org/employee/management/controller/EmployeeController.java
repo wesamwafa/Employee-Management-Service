@@ -18,11 +18,11 @@ public interface EmployeeController {
     ResponseEntity<List<EmployeeDto>> getAllEmployees() throws BusinessException;
 
     @GetMapping("/{staffId}")
-    ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long staffId);
+    ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("staffId") String staffId) throws BusinessException;
 
     @PutMapping("/{staffId}")
-    ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long staffId, @RequestBody EmployeeDto employeeDto);
+    ResponseEntity<EmployeeDto> updateEmployee(@PathVariable String staffId, @RequestBody EmployeeDto employeeDto);
 
     @DeleteMapping("/{staffId}")
-    ResponseEntity<Void> deleteEmployee(@PathVariable Long staffId);
+    ResponseEntity<Void> deleteEmployee(@PathVariable String staffId);
 }

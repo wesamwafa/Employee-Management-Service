@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -18,9 +19,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeManagementServiceImpl.class);
 
-    private final EmployeeRepository employeeRepository ;
+    private final EmployeeRepository employeeRepository;
 
-    private final DepartmentManagementService departmentManagementService ;
+    private final DepartmentManagementService departmentManagementService;
 
 
     public EmployeeManagementServiceImpl(EmployeeRepository employeeRepository, DepartmentManagementService departmentManagementService) {
@@ -32,9 +33,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     public void addEmployee(EmployeeDto employeeDto) throws BusinessException {
         if (employeeDto != null) {
             try {
-                if(isEmployeeExist(employeeDto.getStaffId(), employeeDto.getEmail())){
-                    throw new BusinessException("employee already exists");
-                }
+                checkEmployeeExist(employeeDto.getStaffId(), employeeDto.getEmail());
                 Employee employee = mapDtoToEmployee(employeeDto);
                 Employee savedEmployee = employeeRepository.save(employee);
                 logger.info("Employee saved successfully with id: {}", savedEmployee.getId());
@@ -50,8 +49,9 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     }
 
     @Override
-    public EmployeeDto getEmployee(String staffId) {
-        return null;
+    public EmployeeDto getEmployee(String staffId) throws BusinessException {
+        return employeeRepository.findByStaffId(staffId)
+                .orElseThrow(() -> new BusinessException("employee does not exist"));
     }
 
     @Override
@@ -63,6 +63,7 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
     public void deleteEmployee(String staffId) {
 
     }
+
     private Employee mapDtoToEmployee(EmployeeDto employeeDto) throws BusinessException {
         return Employee.builder()
                 .name(employeeDto.getName())
@@ -74,11 +75,13 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
                 .build();
     }
 
-    private boolean isEmployeeExist(String staffId , String email){
-        return employeeRepository.existsByStaffId(staffId) || employeeRepository.existsByEmail(email);
+    private void checkEmployeeExist(String staffId, String email) throws BusinessException {
+        if (employeeRepository.existsByEmailOrStaffId(staffId, email)) {
+            throw new BusinessException("employee already exists");
+        }
     }
 
-    private Department getDepartmentByName(String departmentName) throws BusinessException{
+    private Department getDepartmentByName(String departmentName) throws BusinessException {
         return departmentManagementService.getDepartmentByName(departmentName);
     }
 

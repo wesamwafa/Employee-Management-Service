@@ -1,8 +1,6 @@
 package org.employee.management.controller;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.employee.management.exception.BusinessException;
 import org.employee.management.model.dto.EmployeeDto;
 import org.employee.management.service.EmployeeManagementServiceImpl;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class EmployeeControllerImpl implements EmployeeController{
+public class EmployeeControllerImpl implements EmployeeController {
 
     private final EmployeeManagementServiceImpl employeeService;
 
@@ -28,12 +26,8 @@ public class EmployeeControllerImpl implements EmployeeController{
 
     @Override
     public ResponseEntity<EmployeeDto> createEmployee(@Valid EmployeeDto employeeDto) throws BusinessException {
-        try {
-            employeeService.addEmployee(employeeDto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (BusinessException e) {
-            throw new BusinessException(e.getMessage());
-        }
+        employeeService.addEmployee(employeeDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
@@ -42,17 +36,17 @@ public class EmployeeControllerImpl implements EmployeeController{
     }
 
     @Override
-    public ResponseEntity<EmployeeDto> getEmployeeById(Long staffId) {
+    public ResponseEntity<EmployeeDto> getEmployeeById(String staffId) throws BusinessException {
+        return ResponseEntity.ok(employeeService.getEmployee(staffId));
+    }
+
+    @Override
+    public ResponseEntity<EmployeeDto> updateEmployee(String staffId, EmployeeDto employeeDto) {
         return null;
     }
 
     @Override
-    public ResponseEntity<EmployeeDto> updateEmployee(Long staffId, EmployeeDto employeeDto) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteEmployee(Long staffId) {
+    public ResponseEntity<Void> deleteEmployee(String staffId) {
         return null;
     }
 }
