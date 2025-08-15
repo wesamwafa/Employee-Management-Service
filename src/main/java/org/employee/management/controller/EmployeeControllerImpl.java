@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,28 +26,33 @@ public class EmployeeControllerImpl implements EmployeeController {
 
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDto> createEmployee(@Valid EmployeeDto employeeDto) throws BusinessException {
         employeeService.addEmployee(employeeDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() throws BusinessException {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDto> getEmployeeById(String staffId) throws BusinessException {
         return ResponseEntity.ok(employeeService.getEmployee(staffId));
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeDto> updateEmployee(String staffId, EmployeeDto employeeDto) throws BusinessException {
         employeeService.updateEmployee(staffId,employeeDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteEmployee(String staffId) throws BusinessException{
         employeeService.deleteEmployee(staffId);
         return ResponseEntity.ok().build();
