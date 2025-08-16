@@ -41,9 +41,9 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
 
     @Override
     public DepartmentDto getDepartment(String departmentId) throws BusinessException {
-        Department department = departmentRepository.findById(Long.valueOf(departmentId))
-                .orElseThrow(() -> new BusinessException("Department doesnt exist"));
-        return DepartmentDto.builder().departmentName(department.getDepartmentName()).build();
+        return DepartmentDto.builder()
+                .departmentName(getDepartmentById(Long.valueOf(departmentId)).getDepartmentName())
+                .build();
     }
 
     @Override
@@ -64,6 +64,10 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
     @Transactional
     public void deleteDepartment(String departmentId) throws BusinessException {
         try {
+            Department department = getDepartmentById(Long.valueOf(departmentId));
+            if (!department.getEmployees().isEmpty()) {
+                throw new BusinessException("Cannot delete department with existing employees");
+            }
             departmentRepository.deleteById(Long.valueOf(departmentId));
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
@@ -84,5 +88,10 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
 
     private boolean isDepartmentExist(DepartmentDto departmentDto) {
         return departmentRepository.existsByDepartmentNameIgnoreCase(departmentDto.getDepartmentName().trim());
+    }
+
+    private Department getDepartmentById(Long id) throws BusinessException {
+        return departmentRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Department doesnt exist"));
     }
 }
