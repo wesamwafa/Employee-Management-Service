@@ -18,6 +18,7 @@ public class EmployeeDto {
 
     @NotBlank(message = "Staff ID is required")
     @Size(max = 9, message = "Staff ID must be at most 9 characters")
+    @Pattern(regexp = "\\d+", message = "Staff ID must contain only numbers")
     private String staffId;
 
     @NotBlank(message = "Name is required")
