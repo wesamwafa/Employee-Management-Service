@@ -28,7 +28,7 @@ src/
 │   │   ├── controller/      # REST controllers
 │   │   ├── model/           # JPA entities
 │   │   ├── exception/       # Exception handling
-│   │   ├── repo/      # Data repositories
+│   │   ├── repo/            # Data repositories
 │   │   ├── scheduler/       # Scheduled tasks
 │   │   └── service/         # Business logic
 │   └── resources/
