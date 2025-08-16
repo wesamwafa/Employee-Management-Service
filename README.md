@@ -23,12 +23,12 @@ A comprehensive Spring Boot application for managing employees and departments w
 ```
 src/
 ├── main/
-│   ├── java/com/example/employeemanagementsystem/
+│   ├── java/com/org/employeemanagement
 │   │   ├── config/          # Security configuration
 │   │   ├── controller/      # REST controllers
 │   │   ├── model/           # JPA entities
 │   │   ├── exception/       # Exception handling
-│   │   ├── repository/      # Data repositories
+│   │   ├── repo/      # Data repositories
 │   │   ├── scheduler/       # Scheduled tasks
 │   │   └── service/         # Business logic
 │   └── resources/
@@ -244,5 +244,9 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 - **Cron Expression**: Standard scheduling format
 - **Logging**: Comprehensive activity tracking
 - **Bonus Storage**: Audit trail in database
+
+
+### **Swagger Api Documentation **
+- ** kindly run the app then visit : http://localhost:8080/swagger-ui.html
 
 ----
