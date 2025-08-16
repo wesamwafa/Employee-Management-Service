@@ -76,6 +76,12 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
                 .orElseThrow(() -> new BusinessException("Department '" + departmentName + "' does not exist"));
     }
 
+    @Override
+    public List<Object[]> getDepartmentEmployeeCounts() {
+        logger.debug("Fetching department employee counts");
+        return departmentRepository.findDepartmentEmployeeCounts();
+    }
+
     private boolean isDepartmentExist(DepartmentDto departmentDto) {
         return departmentRepository.existsByDepartmentNameIgnoreCase(departmentDto.getDepartmentName().trim());
     }

@@ -23,4 +23,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     List<DepartmentDto> getAllDepartments();
 
     boolean existsByDepartmentNameIgnoreCase(String departmentName);
+
+    @Query("SELECT d.departmentName, COUNT(e) FROM Department d LEFT JOIN d.employees e GROUP BY d.id, d.departmentName")
+    List<Object[]> findDepartmentEmployeeCounts();
 }

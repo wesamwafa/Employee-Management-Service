@@ -19,4 +19,7 @@ public interface DepartmentManagementService {
     void deleteDepartment(String departmentId) throws BusinessException;
 
     Department getDepartmentByName(String departmentName) throws BusinessException;
+
+
+    List<Object[]> getDepartmentEmployeeCounts();
 }
