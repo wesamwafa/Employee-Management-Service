@@ -23,10 +23,6 @@ public class Department {
     @Column(unique = true, nullable = false)
     private String departmentName;
 
-
-//    @Column(unique = true, nullable = false)
-//    private String departmentId;
-
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees;
 }
