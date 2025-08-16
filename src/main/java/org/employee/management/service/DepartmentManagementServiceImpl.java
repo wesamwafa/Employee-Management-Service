@@ -8,9 +8,12 @@ import org.employee.management.repo.DepartmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentManagementServiceImpl implements DepartmentManagementService {
@@ -36,14 +39,17 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
 
     @Override
     public List<DepartmentDto> getAllDepartments() {
-        return departmentRepository.getAllDepartments();
+        List<DepartmentDto> departmentDtos = new ArrayList<>();
+        List<Department> departments = departmentRepository.findAll();
+        if (!departments.isEmpty()) {
+            departmentDtos = departments.stream().map(this::DepartmentToDto).collect(Collectors.toList());
+        }
+        return departmentDtos;
     }
 
     @Override
     public DepartmentDto getDepartment(String departmentId) throws BusinessException {
-        return DepartmentDto.builder()
-                .departmentName(getDepartmentById(Long.valueOf(departmentId)).getDepartmentName())
-                .build();
+        return DepartmentToDto(getDepartmentById(Long.valueOf(departmentId)));
     }
 
     @Override
@@ -65,7 +71,7 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
     public void deleteDepartment(String departmentId) throws BusinessException {
         try {
             Department department = getDepartmentById(Long.valueOf(departmentId));
-            if (!department.getEmployees().isEmpty()) {
+            if (!CollectionUtils.isEmpty(department.getEmployees())) {
                 throw new BusinessException("Cannot delete department with existing employees");
             }
             departmentRepository.deleteById(Long.valueOf(departmentId));
@@ -90,8 +96,14 @@ public class DepartmentManagementServiceImpl implements DepartmentManagementServ
         return departmentRepository.existsByDepartmentNameIgnoreCase(departmentDto.getDepartmentName().trim());
     }
 
-    private Department getDepartmentById(Long id) throws BusinessException {
+    public Department getDepartmentById(Long id) throws BusinessException {
         return departmentRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Department doesnt exist"));
+    }
+
+    DepartmentDto DepartmentToDto(Department department) {
+        return DepartmentDto.builder()
+                .departmentName(department.getDepartmentName())
+                .build();
     }
 }

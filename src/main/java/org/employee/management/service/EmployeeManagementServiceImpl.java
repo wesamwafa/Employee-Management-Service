@@ -63,7 +63,6 @@ public class EmployeeManagementServiceImpl implements EmployeeManagementService 
 
     @Override
     public void updateEmployee(String staffId, EmployeeDto updatedEmployeeDto) throws BusinessException {
-        //find employee or throw exception if not exist
         Employee existingEmployee = getByStaffId(staffId);
         updateEmployeeFromDto(existingEmployee,updatedEmployeeDto);
         employeeRepository.save(existingEmployee);
