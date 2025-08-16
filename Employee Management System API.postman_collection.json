@@ -1,0 +1,436 @@
+{
+	"info": {
+		"_postman_id": "f4199f4f-6956-40d6-9cf2-1b86c1d39791",
+		"name": "Employee Management System API",
+		"description": "REST APIs for Employee Management System with Spring Boot, Spring Security",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47612207",
+		"_collection_link": "https://wesamwafa9011-1831431.postman.co/workspace/66abd781-7d72-46cb-817f-5661afca0d07/collection/47612207-f4199f4f-6956-40d6-9cf2-1b86c1d39791?action=share&source=collection_link&creator=47612207"
+	},
+	"item": [
+		{
+			"name": "Departments",
+			"item": [
+				{
+					"name": "Get All Departments",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "employeepass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "employee",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/departments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"departments"
+							]
+						},
+						"description": "Retrieve all departments. Accessible by both USER and ADMIN roles."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Department by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "employeepass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "employee",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/departments/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"departments",
+								"1"
+							]
+						},
+						"description": "Retrieve a specific department by ID. Accessible by both USER and ADMIN roles."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Department",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "adminpass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"departmentName\": \"Engineering 655\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/departments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"departments"
+							]
+						},
+						"description": "Create a new department. Only accessible by ADMIN role."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Department",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "employeepass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "employee",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"departmentName\": \"engineering 01\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/departments/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"departments",
+								"1"
+							]
+						},
+						"description": "Update an existing department. Only accessible by ADMIN role."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Department",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/departments/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"departments",
+								""
+							]
+						},
+						"description": "Delete a department. Only accessible by ADMIN role. Cannot delete departments with existing employees."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "Get All Employees",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "employeepass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "employee",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						},
+						"description": "Retrieve all employees. Accessible by both USER and ADMIN roles."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "employeepass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "employee",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/16398",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"16398"
+							]
+						},
+						"description": "Retrieve a specific employee by ID. Accessible by both USER and ADMIN roles."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "adminpass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"staffId\": \"16359\",\n    \"name\": \"jonn cena\",\n    \"email\": \"john.cena@oncomepda4ne.com\",\n    \"salary\": 90000.0,\n    \"hireDate\": \"2023-06-15\",\n    \"department\": \"WWE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees"
+							]
+						},
+						"description": "Create a new employee. Only accessible by ADMIN role."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"staffId\" : \"22222\",\n    \"name\": \"John Updated Cena\",\n    \"email\": \"john.Cena@company.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/employees/16399",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"16399"
+							]
+						},
+						"description": "Update an existing employee. Only accessible by ADMIN role."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "employeepass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "employee",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/employees/16398",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"employees",
+								"16398"
+							]
+						},
+						"description": "Delete an employee. Only accessible by ADMIN role."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "admin123",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
