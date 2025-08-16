@@ -19,6 +19,12 @@ public class SecurityConfig {
 
     private final CustomAuthEntryPoint authEntryPoint;
 
+    private static final String[] SWAGGER_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+
     public SecurityConfig(CustomAuthEntryPoint authEntryPoint) {
         this.authEntryPoint = authEntryPoint;
     }
@@ -45,7 +51,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
-        http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                .anyRequest().authenticated());
         http.httpBasic(basic -> basic.authenticationEntryPoint(authEntryPoint));
         return http.build();
     }
